@@ -14,7 +14,7 @@ help: ## Affiche cette aide
 .PHONY: dev
 dev: ## Lance le serveur de développement
 	docker-compose up -d
-	${dockerRunWithSymfonyPort} symfony server:start --no-tls --port 8001
+	symfony server:start
 
 .PHONY: undev
 undev: ## Lance le serveur de développement
