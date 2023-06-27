@@ -14,18 +14,27 @@ help: ## Affiche cette aide
 .PHONY: dev
 dev: ## Lance le serveur de développement
 	docker-compose up -d
-	symfony server:start
+	open http://localhost:8001/ >> /dev/null
+
+init: dev ## Initialisation du serveur de développement
+	docker-compose exec php composer install
+	docker-compose exec yarn yarn install
 
 .PHONY: undev
 undev: ## Lance le serveur de développement
-	#symfony server:stop
 	docker-compose down
 
 .PHONY: cmd
-cmd: ## Lance le serveur de développement
-	#symfony server:stop
-	${dockerInteractPhp} bash
+cmd: ## Lance un terminal dans le container php
+	docker-compose exec php bash
 
+.PHONY: yarn
+yarn: ## Lance un terminal dans le container node
+	docker-compose exec yarn bash
+
+.PHONY: cmd
+log: ## log de développement
+	docker-compose logs -f
 
 .PHONY: lint
 lint: vendor/autoload.php ## Analyse le code
