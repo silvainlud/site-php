@@ -1,0 +1,16 @@
+name: Security
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  push:
+  pull_request:
+
+jobs:
+  check_security:
+    name: Symfony Check Security
+    runs-on: ubuntu-latest
+    container: ghcr.io/aeroclub-de-saint-omer/php:latest
+    steps:
+      - uses: actions/checkout@master
+      - name: security:check
+        run: symfony security:check

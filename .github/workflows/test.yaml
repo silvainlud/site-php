@@ -1,0 +1,23 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    container: ghcr.io/aeroclub-de-saint-omer/php:latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Composer
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress
+      - name: Lint
+        run: ./vendor/bin/phpstan analyse  --memory-limit=-1
+  test:
+    name: lint
+    runs-on: ubuntu-latest
+    container: ghcr.io/aeroclub-de-saint-omer/php:latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Composer
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress
+      - name: Lint
+        run: ./vendor/bin/phpunit
