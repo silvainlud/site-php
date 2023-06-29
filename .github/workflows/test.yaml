@@ -1,10 +1,12 @@
 name: Tests
 on: [push, pull_request]
 jobs:
-  check_security:
+  security:
+    name: Symfony Check Security
     uses: ./.github/workflows/security.yaml
   lint:
-    name: lint
+    name: Linter (PhpStan)
+    needs: [security]
     runs-on: ubuntu-latest
     container: ghcr.io/aeroclub-de-saint-omer/php:latest
     steps:
@@ -14,7 +16,8 @@ jobs:
       - name: Lint
         run: ./vendor/bin/phpstan analyse  --memory-limit=-1
   test:
-    name: lint
+    name: Test Unitaire (PHP Unit)
+    needs: [security]
     runs-on: ubuntu-latest
     container: ghcr.io/aeroclub-de-saint-omer/php:latest
     steps:
