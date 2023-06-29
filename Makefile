@@ -14,7 +14,7 @@ help: ## Affiche cette aide
 .PHONY: dev
 dev: ## Lance le serveur de développement
 	docker-compose up -d
-	open http://localhost:8001/ >> /dev/null
+	sleep 2 && open http://localhost:8001/ >> /dev/null
 
 init: dev ## Initialisation du serveur de développement
 	docker-compose exec php composer install
