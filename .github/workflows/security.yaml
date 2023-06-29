@@ -2,8 +2,7 @@ name: Security
 on:
   schedule:
     - cron: '0 12 * * *'
-  push:
-  pull_request:
+  workflow_call:
 
 jobs:
   check_security:

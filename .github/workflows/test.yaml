@@ -1,6 +1,8 @@
 name: Tests
 on: [push, pull_request]
 jobs:
+  check_security:
+    uses: ./.github/workflows/security.yaml
   lint:
     name: lint
     runs-on: ubuntu-latest
