@@ -38,7 +38,7 @@ log: ## log de développement
 
 .PHONY: lint
 lint: vendor/autoload.php ## Analyse le code
-	$(dockerRun) ./vendor/bin/phpstan analyse  --memory-limit=-1
+	./vendor/bin/phpstan analyse  --memory-limit=-1
 
 .PHONY: format
 format: ## Refomatage du code
