@@ -28,17 +28,25 @@ undev: ## Lance le serveur de développement
 cmd: ## Lance un terminal dans le container php
 	docker-compose exec php bash
 
+.PHONY: php
+php: ## Lance un terminal dans le container php
+	docker-compose exec php bash
+
 .PHONY: yarn
 yarn: ## Lance un terminal dans le container node
 	docker-compose exec yarn bash
 
-.PHONY: cmd
+.PHONY: log
 log: ## log de développement
 	docker-compose logs -f
 
 .PHONY: lint
 lint: vendor/autoload.php ## Analyse le code
 	./vendor/bin/phpstan analyse  --memory-limit=-1
+
+.PHONY: test
+test: vendor/autoload.php ## Tests unitaires
+	./vendor/bin/phpunit
 
 .PHONY: format
 format: ## Refomatage du code
