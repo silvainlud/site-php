@@ -3,6 +3,7 @@ on:
   push:
     branches-ignore: [ main ]
   pull_request:
+  workflow_call:
 jobs:
   security:
     uses: ./.github/workflows/security.yaml
