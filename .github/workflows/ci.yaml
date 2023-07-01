@@ -1,15 +1,17 @@
-name: Tests
+name: ACSTO | Site CI/CD
 on:
   push:
-    branches-ignore: [ main ]
+    branches: [ '**' ]
+    tags: [ 'v*.*.*' ]
   pull_request:
-  workflow_call:
+
+
 jobs:
   security:
     uses: ./.github/workflows/security.yaml
   lint:
     name: Linter (PhpStan)
-    needs: [security]
+    needs: [ security ]
     runs-on: ubuntu-latest
     container: ghcr.io/aeroclub-de-saint-omer/php:latest
     steps:
@@ -20,7 +22,7 @@ jobs:
         run: ./vendor/bin/phpstan analyse  --memory-limit=-1
   test:
     name: Test Unitaire (PHP Unit)
-    needs: [security]
+    needs: [ security ]
     runs-on: ubuntu-latest
     container: ghcr.io/aeroclub-de-saint-omer/php:latest
     steps:
@@ -29,3 +31,13 @@ jobs:
         run: composer install --prefer-dist --no-ansi --no-interaction --no-progress
       - name: Lint
         run: ./vendor/bin/phpunit
+  rct-deploy:
+    if: github.ref == 'refs/heads/main'
+    name: rct
+    needs: [ test, lint ]
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      ENV: recette
+
+
+

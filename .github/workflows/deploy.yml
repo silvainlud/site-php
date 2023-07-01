@@ -1,19 +1,13 @@
 on:
-  push:
-    branches: [ "main" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-
-env:
-  IMAGE_NAME: aeroclub-de-saint-omer/php
-
+  workflow_call:
+    inputs:
+      ENV:
+        required: true
+        type: string
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yaml
-  buid:
-    name: Build Docker
-    needs: [test]
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -26,3 +20,14 @@ jobs:
         with:
           IMAGE_NAME: ${{ steps.meta.outputs.tags }}
           IMAGE_LABELS: ${{ steps.meta.outputs.labels }}
+  deploy:
+    name: Deploy ${{ inputs.ENV }}
+    environment: ${{ inputs.ENV }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        run: echo The username is ${{ inputs.username }}
+      - name: healthcheck
+        run: echo The username is ${{ inputs.username }}
+
+
