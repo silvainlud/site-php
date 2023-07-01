@@ -5,7 +5,7 @@ on:
   workflow_call:
 
 jobs:
-  check_security:
+  php:
     name: Symfony Check Security
     runs-on: ubuntu-latest
     container: ghcr.io/aeroclub-de-saint-omer/php:latest
@@ -13,3 +13,11 @@ jobs:
       - uses: actions/checkout@master
       - name: security:check
         run: symfony security:check
+  yarn:
+    name: Yarn Check Security
+    runs-on: ubuntu-latest
+    container: node:16
+    steps:
+      - uses: actions/checkout@master
+      - name: security:check
+        run: yarn audit --groups dependencies
