@@ -32,12 +32,18 @@ jobs:
       - name: Lint
         run: ./vendor/bin/phpunit
   rct-deploy:
-    if: github.ref == 'refs/heads/main'
-    name: rct
+    if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags/v')
+    name: Déploiement
     needs: [ test, lint ]
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
     uses: ./.github/workflows/deploy.yaml
     with:
-      ENV: recette
+      ENV: ${{ ( github.ref == 'refs/heads/main' && 'recette' ) || 'production' }}
 
 
 

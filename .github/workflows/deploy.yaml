@@ -1,18 +1,8 @@
-name: Docker PHP
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 on:
   workflow_call:
     inputs:
-      IMAGE_NAME:
+      ENV:
         required: true
-        type: string
-      IMAGE_LABELS:
-        required: false
         type: string
 
 env:
@@ -21,10 +11,9 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: aeroclub-de-saint-omer/site-php
 
-
 jobs:
   build:
-
+    name: Docker
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,8 +21,13 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-
     steps:
+      - uses: actions/checkout@master
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -58,9 +52,21 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: /
+          context: ./
           push: true
-          tags: ${{ IMAGE_NAME }}
-          labels: ${{ IMAGE_LABELS }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  deploy:
+    name: Déploiement
+    environment: ${{ inputs.ENV }}
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: deploy
+        run: echo The username is ${{ inputs.username }}
+      - name: healthcheck
+        run: echo The username is ${{ inputs.username }}
+
+
