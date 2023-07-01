@@ -9,7 +9,7 @@ env:
 
 
 jobs:
-  security:
+  test:
     uses: ./.github/workflows/test.yaml
   buid:
     name: Build Docker
