@@ -3,7 +3,6 @@ on: [push, pull_request]
 jobs:
   security:
     uses: ./.github/workflows/security.yaml
-    name: Symfony Check Security
   lint:
     name: Linter (PhpStan)
     needs: [security]
