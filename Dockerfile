@@ -36,6 +36,7 @@ COPY ./public /app/public
 COPY ./src /app/src
 COPY ./tests /app/tests
 COPY ./translations /app/translations
+COPY ./templates /app/templates
 COPY ./.env /app
 COPY ./composer* /app
 COPY --from=yarn_builder /app/public/build /app/public/build
