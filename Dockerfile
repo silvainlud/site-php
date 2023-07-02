@@ -40,3 +40,6 @@ COPY ./.env /app
 COPY ./composer* /app
 COPY --from=yarn_builder /app/public/build /app/public/build
 COPY --from=php_builder /app/vendor /app/vendor
+
+RUN mkdir var
+RUN chmod 777 -R var/
